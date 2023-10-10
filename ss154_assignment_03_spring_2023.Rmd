@@ -1,0 +1,196 @@
+---
+title: "SS154 Assignment 3, Spring 2023"
+author: "Enter your name here"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+# Don't change the line below
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, 
+                      message=FALSE, fig.width=6, fig.align="center")
+# If you are using other packages, load them here. 
+# If you don't have the following packages installed,
+# please install them first. But don't include the installation
+# code here because every time you knit this document they'll 
+# be reinstalled which is not necessary!
+library(knitr)
+library(janitor)
+library(tidyverse)
+library(stargazer)
+library(modelsummary)
+# we need to set the seed of R's random number generator, 
+# in order to produce comparable results 
+set.seed(1983)
+```
+
+
+```{r echo = FALSE, eval = FALSE}
+
+A few important notes
+
+Note: You should make sure you put your name on top of the document.
+
+Note: This is an RMarkdown document. You can open this document in RStudio, edit it by adding your answers and code, and then knit it to a pdf. To submit your answers to this assignment, simply knit this file as a pdf and submit it as a pdf on Forum. All of your code and answers must be included in the resulting pdf file, i.e., do not set echo = FALSE in any of your code chunks. [This](https://rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf) is a cheat sheet for using Rmarkdown. If you have questions about RMarkdown, please post them on the class Slack channel Try knitting this document in your RStudio. You should be able to get a pdf file. At any step, you can try knitting the document and recreate a pdf. If you get an error, you might have incomplete code. You are responsible for making sure you can knit this document to a pdf.
+
+Note: Wherever you are required to use code to answer the question, you should enter your R code in your answer.
+
+Note: Collaborative work is not allowed. However, you are allowed to ask me or the TA for any questions you have or for more clarity.
+
+Note: The first time you run this document you may get an error that some packages do not exist. If you do not have the packages listed on top of this document, install them first and you will not get those errors.
+
+Note: Do not change seed in the document. The function `set.seed()` has already been set at the beginning of this document to 1983 Changing the see again to a different number will make your results not replicable.
+
+Note: You do not need to tag any additional HC or LO. The set of HCs or HOs that we will grade based on, are provided in the assignment description.
+
+Note: Make sure your submission is as clean and readable as possibel.
+
+```    
+
+## QUESTION 1: A DGP-based example
+
+```{r echo = FALSE, eval = FALSE}
+We would like to see the effect of treatment D on outcome Y in the data-generating process (DGP) below. Pay attention to how these variables are created. 
+```
+
+```{r echo = FALSE}
+D = sample(c(0,1), 500, replace = TRUE, prob = c(.7,.3))
+Y = 0.5*D + rnorm(500, mean = 2)
+X1 = 3.1*D - 2.4*Y
+df = data.frame(D, Y, X1)
+```
+
+```{r echo = FALSE, eval = FALSE}
+To estimate the effect of D on Y, you can run two regressions. One without controlling for X1 and one with controlling for X1.
+```
+
+```{r echo = FALSE}
+model1 = lm(Y ~ D, data = df)
+model2 = lm(Y ~ D + X1, data = df)
+```
+
+**1.1. Which model is giving a less biased treatment effect and why?**
+
+
+## QUESTION 2: Interpreting regression results
+
+```{r echo = FALSE, eval = FALSE}
+In the paper "Same race teachers do not necessarily raise academic achievement," Jeffrey Penney studies the effect of having same race teachers on academic performance of students. You can find the paper through the Minerva Library System. Link to paper: https://www.sciencedirect.com/science/article/pii/S0165176523000186
+
+Pay attention to Table 2 in the paper. The numbers are the treatment effects and the numbers in parentheses are p-values associated with the coefficients Columns 1-2 are for when the author includes the treatment variable without any interaction with class size and columns 3-6 are for when the author includes the treatment variable interacting with class size. Ingore rows that reflect quantile effects and only pay attention to rows that note "OLS." 
+```
+
+**2.1. Interpret the first number on the table (0.084) as intuitively and as accurately as you can.**
+
+
+**2.2. Why do you think the author thinks it is important to include an interaction term between the treatment variable and class size?**
+
+
+```{r echo = FALSE, eval = FALSE}
+As mentioned, the numbers in parentheses are the p-values associated with each variable.
+```
+
+**2.3. Based on the footnote of the table, what is the difference between the last column of the table, called p-value, and the numbers in parentheses? Why is the last column included?**
+
+
+**2.4. Explain the null and alternative hypotheses associated with the p-value reported in the first row and last column of the table (0.001). Do you reject or fail to reject the null hyppthesis?**
+
+
+## QUESTION 3: Regressions with binary outcomes
+
+```{r echo = FALSE, eval = FALSE}
+For this question, we will review HR data from IBM. We are interested in the question of whether employee self-evaluated level of work-life balance is an importantion factor in attrition -- whether the employee decides to leave the company or not. You can download the data from here: https://raw.githubusercontent.com/ahdvnd/ss154-data/main/WA_Fn-UseC_-HR-Employee-Attrition.csv
+
+The variable attrition is binary and the variable work-life balance is ordered categorical. There are many other variables in the data such as level of salary, years in job, age, education, department, etc.
+```
+
+
+```{r echo = FALSE, eval = FALSE}
+Define a variable called satisfied that equals 0 if the employee job satisfaction is 1 or 2 and is 1 if the employee job satisfaction is 3 or 4.
+```
+
+```{r}
+# Your code here
+```
+
+**3.1. What percentage of satisfied versus unsatisfied employees who leave the company?**
+
+```{r}
+# Your code here
+```
+
+```{r echo = FALSE, eval = FALSE}
+Before we start, think of a causal graph (given the variables in the dataset and variables that may not be in the dataset) and find the confounding variables that would block all backdoor paths.
+```
+
+**3.2. Paste your DAG here and copy and paste all the backdoor paths. Read the RMarkdown cheatsheet to learn about how to embed images in RMarkdown.**
+
+
+**3.3. Are there any confounding variables that are not in the dataset?**
+
+
+**3.4. Only using the confounders in the dataset, run a linear probability model of the outcome on the treatment and the confounding variables.**
+
+```{r}
+# Your code here
+```
+
+**3.5. Did you use the treatment variable as a discrete variable or as a categorical variable? Make a justification for your choice. Note that either choice is ok as long as you justify it.**
+
+
+**3.6. What is the interpretation of the treatment effect?**
+
+
+**3.7. Is the treatmenet effect significant?**
+
+
+**3.8. Now estimate the same model with a logistic regression and interpret the results.**
+
+```{r}
+# Your code here
+```
+
+**3.9. Calculate the marginal effects. Are the signs of the effect consistent with what you would have expected?**
+
+```{r}
+# Your code here
+```
+
+
+## QUESTION 4: Model with count data
+
+```{r echo = FALSE, eval = FALSE}
+In this question, we will use a Poisson regression for explaining the number of Olympic Games medals. Then answer the following questions using https://raw.githubusercontent.com/ahdvnd/ss154-data/main/olympics_data.csv.
+
+In addition to log of population and log of GDP, the data contain an indicator variable (SOVIET) to indicate that a country was part of the former Soviet Union. The variable HOST indicates the country hosting the Olympic Games. 
+```
+
+**4.1. Using again the combined data for 1992 and 1996, estimate the Poisson regression model that adds these two variables to the specification.**
+
+```{r}
+# Your code here
+```
+
+**4.2. Interpret the coefficient on the variable HOST. Is the sign what you expected?**
+
+
+**4.3. Test for overdispersion in your model and discuss your findings.**
+
+```{r}
+# Your code here
+```
+
+
+## End of Assignment
+
+```{r echo = FALSE, eval = FALSE}
+
+Final Steps:
+
+Make sure you add sufficient comments to your code to make it clear what your code generally does. Please save and submit this .rmd file together with the pdf output. Submission of both files are required. If you get an error when converting the file to pdf, take a look at what the error says and edit your .Rmd document or reach out to us. Then, try to Knit again! Troubleshooting these error messages will teach you a lot about coding in R.
+
+Good Luck! The Teaching Team
+```
